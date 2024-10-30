@@ -23,11 +23,11 @@ class Model(nn.Module):
 
     w_weight = create_sin_cos_encoding(embedding, w_size)
     h_weight = create_sin_cos_encoding(embedding, h_size)
-    weight = torch.cat((w_weight, h_weight), dim=0)
-    
+    weight = torch.cat((w_weight, h_weight), dim=0).to(device)
+
     self.space_emb = nn.Embedding(num_embeddings=w_size + h_size, embedding_dim=embedding, _weight=weight, **factory_kwargs)
     self.category_emb = nn.Embedding(categories, embedding, **factory_kwargs)
-    self.step_emb = nn.Embedding(steps, embedding, _weight=create_sin_cos_encoding(embedding, steps), **factory_kwargs)
+    self.step_emb = nn.Embedding(steps, embedding, _weight=create_sin_cos_encoding(embedding, steps).to(device), **factory_kwargs)
 
     self.unet = UNet(in_ch, out_ch, embedding, **factory_kwargs)
 
