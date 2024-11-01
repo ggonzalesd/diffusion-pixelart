@@ -28,7 +28,7 @@ class UNet(nn.Module):
     self.sa3 = Attention(d_model=128, heads=8, layers=1, splits=2, spacing=2, size_emb=embedding, **factory_kwargs)
     self.up2 = UpBlock(in_ch=128 + 64, out_ch=64, step_embedding=embedding, category_embedding=embedding, **factory_kwargs)
     self.sa4 = Attention(d_model=64, heads=8, layers=1, splits=4, spacing=1, size_emb=embedding, **factory_kwargs)
-    self.out = nn.Conv2d(64, out_ch, kernel_size=1, **factory_kwargs)
+    self.out = nn.Conv2d(64, out_ch, kernel_size=1, bias=False, **factory_kwargs)
 
   def __call__(self, X:Tensor, t:Tensor, s:tuple[Tensor, Tensor], c:Tensor=None) -> Tensor:
     return super().__call__(X, t, s, c)
